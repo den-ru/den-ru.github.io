@@ -1,1 +1,30 @@
-
+.card {
+    position: relative;
+    width:400px;
+    height:200px;
+    perspective: 1000px;
+}
+.card.fliped .flipCard {
+	transform: rotateY(180deg);
+}
+.flipCard {
+    transition: 0.6s;
+	transform-style: preserve-3d;
+    position: relative;
+}
+.flipCard>div {
+    position:absolute;
+    width:400px;
+    height:200px;
+    top: 0;
+    left: 0;
+    backface-visibility: hidden;
+}
+.front {
+    z-index: 2;
+	transform: rotateY(0deg);
+}
+.back {
+    background: #f00;
+    transform: rotateY(180deg);
+}
