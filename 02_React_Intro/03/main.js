@@ -1,9 +1,9 @@
+const IMG_URL = 'http://lorempixel.com/400/200/abstract/';
 const FlipCard = React.createClass({
     getInitialState() {
         return {
             cardFliped: false,
-            url:'http://lorempixel.com/400/200/abstract/',
-            image:'http://lorempixel.com/400/200/abstract/',
+            image: IMG_URL,
             bgclr: this.getRandomRgb()
         };
     },
@@ -23,7 +23,7 @@ const FlipCard = React.createClass({
     getRandomBg() {
         if (this.state.cardFliped)
         this.setState({
-            image: this.state.url+'?'+Math.random()
+            image: IMG_URL+'?'+Math.random()
         })
     },
     render() {
