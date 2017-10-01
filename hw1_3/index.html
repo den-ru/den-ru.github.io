@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <style>
+        th > span {
+            position: relative;
+        }
+        th > span:hover {
+            border-bottom:1px dotted;
+            cursor:pointer;
+        }
+        th > span.asc:before, th > span.desc:before {
+            position: absolute;
+            right: -13px;
+            width: 10px;
+            height: 32px;
+            content: "^";
+        }
+        th > span.asc:before {
+            transform: rotate(180deg);
+        }
+    </style>
+    </head>
+    <body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="jumbotron">
+                <h1>Find movies</h1>
+                <form id="search-form">
+                  <div class="form-row align-items-center">
+                    <div class="col-auto">
+                      <label class="sr-only" for="inlineFormInput">search film</label>
+                      <input type="text" class="form-control mb-2 mb-sm-0" id="search-query" placeholder="search film">
+                    </div>
+                    <div class="col-auto">
+                      <button type="submit" class="btn btn-primary">find</button>
+                    </div>
+                  </div>
+                </form>
+            </div>
+            <div id="search-result"></div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+    <script>
+        let findedData = {};
+        const searchResultTemplate = (rows) => {
+            const res = `<table id="search-result-table" class="table sortable">
+                <tr>
+                    <th>Poster</th>
+                    <th class="id"><span>ID</span></th>
+                    <th class="title"><span>Title</span></th>
+                    <th class="original_language"><span>Language</span></th>
+                    <th class="popularity"><span>Popularity Index</span></th>
+                    <th class="vote_count"><span>Votes Count</span></th>
+                    <th class="vote_average"><span>Rating</span></th>
+                    <th class="release_date"><span>Release Date</span></th>
+                </tr>
+                ${rows}
+            </table>`;
+            return res;
+        }
+        const resultRowTemplate = (row) => {
+            //console.log(row);
+            const res =`<tr>
+                <td><img src="https://image.tmdb.org/t/p/w640/${row.poster_path}" style="max-height:150px;" /></td>
+                <td>${row.id}</td>
+                <td>${row.title}</td>
+                <td>${row.original_language}</td>
+                <td>${row.popularity}</td>
+                <td>${row.vote_count}</td>
+                <td>${row.vote_average}</td>
+                <td>${row.release_date}</td>
+            </tr>`
+            return res;
+        }
+
+        const renderTable = (data) => {
+            const resEl = document.getElementById('search-result');
+
+            //console.log(data);
+            let res = '';
+            if (data.total_results) {
+                res='';
+                data.results.forEach((row)=>{
+                    res +=resultRowTemplate(row);
+                });
+                res = searchResultTemplate(res, data);
+            };
+
+            resEl.innerHTML=res;
+
+            if (('sort_field' in data) && ('sort_by' in data))
+            {
+                document.querySelectorAll('#search-result-table th').forEach((el, i, arr) => {
+                    const span = el.querySelector('span');
+                    if (span)
+                        if (el.className == data.sort_field)
+                        {
+                            span.className = data.sort_by;
+                        }
+                        else {
+                            span.className = '';
+                        }
+                })
+            }
+
+              document.querySelectorAll('#search-result-table th').forEach((el, i, arr) => {
+                  //console.log(el, i, arr);
+                  const field = el.className;
+                  if (field)
+                      el.addEventListener('click', function(event) {
+                          const span = el.querySelector('span');
+                          let sort = (span.className === 'asc')?'desc':'asc';
+                          span.className = sort;
+                          sortByField(field, sort);
+                      });
+              })
+
+            return res;
+        };
+
+        //console.log(field, sort);
+        const sortByField = (field, sort) => {
+            console.log(findedData);
+
+            const sortedData = findedData.results;
+
+            findedData.sort_field = field;
+            findedData.sort_by = sort;
+
+            sortedData.sort((a,b) => {
+                let res=0;
+                if (a[field] > b[field]) {
+                    res = 1;
+                  }
+                  if (a[field] < b[field]) {
+                    res = -1;
+                  }
+                  if (sort == 'asc')
+                    res *=-1;
+                  return res;
+            })
+            findedData.results = sortedData;
+            //console.log(findedData);
+            renderTable(findedData);
+        }
+
+        const doSearch = (query) => {
+            const url = `https://api.themoviedb.org/3/search/movie?include_adult=false&page=1&language=en-US&api_key=28245ec89a135148eefd949f7697145d&query=${query}`;
+            const json = fetch(url)
+              .then(function(response) {
+                return response.json();
+               })
+              .then(function(data) {
+
+                  const result = renderTable(data);
+                  findedData = data;
+              })
+              .catch( console.log );
+            return json;
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const formEl = document.getElementById('search-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const query= document.getElementById('search-query').value;
+                const data = doSearch(query);
+                const result = renderTable(data);
+                return false;
+            });
+        });
+
+    </script>
+
+    </body>
+</html>
