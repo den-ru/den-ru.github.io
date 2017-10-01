@@ -3,6 +3,7 @@
     width:400px;
     height:200px;
     perspective: 1000px;
+    border: 1px solid #ddd;
 }
 .card.fliped .flipCard {
 	transform: rotateY(180deg);
@@ -11,6 +12,11 @@
     transition: 0.6s;
 	transform-style: preserve-3d;
     position: relative;
+    width:400px;
+    height:200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .flipCard>div {
     position:absolute;
@@ -23,6 +29,12 @@
 .front {
     z-index: 2;
 	transform: rotateY(0deg);
+}
+.flipCard::after {
+    content: "";
+    width: 64px;
+    height: 64px;
+    background-image: url(loading.gif);
 }
 .back {
     background: #f00;
