@@ -1,0 +1,68 @@
+.mainhr {
+    height: 50px;
+    background: #ddd;
+}
+.openPostEditorBtn {
+    margin-top: 20px;
+}
+.postlist > li {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.postlist > li .post__header h3 {
+    margin: -20px -20px 20px -20px;
+    background: #f5f5f5;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+.post__content_overflow {
+    max-height: 430px;
+    overflow: hidden;
+}
+.post__content img {
+    max-width: 100%;
+}
+.postlist > li .post__footer {
+    margin: 20px -20px -20px -20px;
+    background: #fefefe;
+    padding: 10px 20px;
+    border-top: 1px solid #ddd;
+}
+.postlist > li .post__footer .tags {
+    display: inline;
+}
+.post__edit-btn {
+    margin-top: 6px;
+}
+#postEditor .post__edit-btn, #postEditor .post__delete-icon {
+    display:none;
+}
+.post__open-btn {
+    position: relative;
+    top: -24px;
+}
+.post__delete-icon {
+    position: relative;
+    top: 8px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+    font-size: 22px;
+    line-height: 29px;
+    text-align: center;
+    border: 1px solid #ddd;
+    color: #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.postlist > li:hover .post__delete-icon {
+    color: #222;
+    border-color:#ddd;
+    background: #ddd;
+}
+
+.popularTags a, .tags a {
+    text-decoration: none;
+    border-bottom: 1px dotted;
+}
