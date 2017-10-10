@@ -1,0 +1,37 @@
+.container-list {
+    width: 50%;
+    margin: 30px auto;
+}
+.container-list h1 {
+    font-family: 'Galada', cursive;
+    color: #1464f6;
+    font-size: 46px;
+    text-align: center;
+    margin: 0 0 40px;
+}
+
+.student {
+    border: 1px solid #ddd;
+    padding: 20px;
+}
+.student h3 {
+    font-weight: 700;
+}
+.student-location i {
+    color: #72bb53;
+}
+
+.students-contacts a {
+    font-size: 36px;
+    color: #bbb;
+    margin-right: 18px;
+}
+
+.container-search {
+    margin-bottom: 20px;
+}
+
+.container-search input {
+    width: 100%;
+    padding: 3px;
+}
